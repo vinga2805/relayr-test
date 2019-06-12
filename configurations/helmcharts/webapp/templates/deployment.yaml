@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "webapp.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "webapp.name" . }}
+    helm.sh/chart: {{ include "webapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "webapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "webapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: redis
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: redis-port
+              containerPort: 6379
+              protocol: TCP
+        - name: python
+          image: "{{ .Values.image1.repository }}:{{ .Values.image1.tag }}"
+          imagePullPolicy: {{ .Values.image1.pullPolicy }}
+          ports:
+            - name: python-port
+              containerPort: 5000
+              protocol: TCP
+          env:
+            - 
+              name: "REDIS_HOST"
+              value: "localhost"
+            -
+              name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                   name: mysql-secret
+                   key: db-password
+            -
+              name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                   name: mysql-secret
+                   key: db-user
+
+             
