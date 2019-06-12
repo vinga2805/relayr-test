@@ -59,9 +59,9 @@ The solution can be explained below.
 #### Installation steps
 - git clone https://github.com/vinga2805/relayr-test.git
 - cd relayr-test/configurations/
-- docker build -t vinga2805/relayr:v5 .
+- docker build -t vinga2805/relayr:v1 . (Replace vinga2805 by your repo id)
 - docker login
-- docker push vinga2805/relayr:v5
+- docker push vinga2805/relayr:v1
 - vi helmcharts/webapp/values.yaml
 - make changes in image1 as below 
 image1: vinga2805/relayr
