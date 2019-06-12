@@ -64,8 +64,8 @@ The solution can be explained below.
 - docker push vinga2805/relayr:v1
 - vi helmcharts/webapp/values.yaml
 - make changes in image1 as below 
-image1: vinga2805/relayr
-tag: v5
+- image1: vinga2805/relayr
+- tag: v1
 - cd helmcharts
 - helm install --name webapp webapp
 - minikune service webapp --url
